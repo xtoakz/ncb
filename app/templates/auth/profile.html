@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Profile - Todo App{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="mb-4">User Profile</h2>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4 mb-md-0">
+                            <div class="avatar-placeholder bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 100px; height: 100px;">
+                                <i data-lucide="user" style="width: 40px; height: 40px;"></i>
+                            </div>
+                            <h4>{{ user.email }}</h4>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <h5>Account Information</h5>
+                                <hr>
+                                <p><strong>Email:</strong> {{ user.email }}</p>
+                                <p><strong>Account ID:</strong> {{ user.id }}</p>
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('todo.dashboard') }}" class="btn btn-primary">
+                                    <i data-lucide="list-todo" class="me-1" style="width: 18px; height: 18px;"></i> My Todos
+                                </a>
+                                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">
+                                    <i data-lucide="log-out" class="me-1" style="width: 18px; height: 18px;"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
