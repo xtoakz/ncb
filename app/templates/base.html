@@ -3,42 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Meine WebApp{% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>{% block title %}NewsletterChat{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">NewsletterChat</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.about') }}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Sign Up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
-                </li>
-            </ul>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}">
+                <i data-lucide="mail-plus" class="me-2"></i>
+                <span>NewsletterChat</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}">
+                            <i data-lucide="home" class="nav-icon"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.about') }}">
+                            <i data-lucide="info" class="nav-icon"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-lucide="user-plus" class="nav-icon"></i> Sign Up
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-lucide="log-in" class="nav-icon"></i> Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
+
+    <!-- Main Content -->
     <main>
         {% block content %}{% endblock %}
     </main>
-    <footer>
-            <p>&copy; 2025 NewsletterChat | Copyright by <a href="https://wddk.company">wddk</a> | <a href="{{ url_for('main.imprint') }}">Imprint</a></p>
-        </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="mb-3">NewsletterChat</h5>
+                    <p>Get personalized news delivered directly to your favorite messaging platforms.</p>
+                    <div class="d-flex gap-3 mb-3">
+                        <a href="#" class="text-light"><i data-lucide="facebook" class="social-icon"></i></a>
+                        <a href="#" class="text-light"><i data-lucide="twitter" class="social-icon"></i></a>
+                        <a href="#" class="text-light"><i data-lucide="instagram" class="social-icon"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Home</a></li>
+                        <li><a href="{{ url_for('main.about') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> About</a></li>
+                        <li><a href="#" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Pricing</a></li>
+                        <li><a href="#" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Contact</h5>
+                    <ul class="list-unstyled">
+                        <li class="d-flex align-items-center mb-2">
+                            <i data-lucide="mail" class="footer-icon me-2"></i>
+                            <a href="mailto:support@wddk-commerce.de" class="text-light text-decoration-none">support@wddk-commerce.de</a>
+                        </li>
+                        <li class="d-flex align-items-center mb-2">
+                            <i data-lucide="phone" class="footer-icon me-2"></i>
+                            <span>+49 421 52636100</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 NewsletterChat | <a href="https://wddk.company" class="text-light">wddk</a></p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ url_for('main.imprint') }}" class="text-light text-decoration-none">Imprint</a> |
+                    <a href="#" class="text-light text-decoration-none">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
 </body>
 </html>

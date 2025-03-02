@@ -1,85 +1,301 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('WebApp is ready.');
-
+    console.log('NewsletterChat is ready.');
+    
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80, // Offset for fixed navbar
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Add active class to current nav item
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+        const linkPath = link.getAttribute('href');
+        if (linkPath === currentPath || (currentPath === '/' && linkPath === '/')) {
+            link.classList.add('active');
+        }
+    });
+    
+    // Animate elements on scroll
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.card, .feature-icon, h1, h2, .btn-lg');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.2;
+            
+            if (elementPosition < screenPosition) {
+                element.classList.add('fade-in');
+            }
+        });
+    };
+    
+    // Run once on load
+    animateOnScroll();
+    
+    // Run on scroll
+    window.addEventListener('scroll', animateOnScroll);
+    
+    // News functionality
     const btn = document.getElementById('get-news-btn');
     const input = document.getElementById('topic-input');
     const newsContainer = document.getElementById('news-container');
-
+    
     function displayNews(data) {
+        if (!newsContainer) return;
+        
         newsContainer.innerHTML = "";
-
-        // Ergebnisse anzeigen
-        if (data.results && data.results.length > 0) {
-            let resultsSection = document.createElement("div");
-            resultsSection.innerHTML = "<h3>Ergebnisse</h3>";
-            data.results.forEach(result => {
-                let div = document.createElement("div");
-                div.classList.add("result-item");
-                let title = `<h4><a href="${result.url}" target="_blank">${result.title}</a></h4>`;
-                let description = result.description ? `<p>${result.description}</p>` : "";
-                let snippet = result.snippets ? `<p><strong>Snippet:</strong> ${result.snippets}</p>` : "";
-                div.innerHTML = title + description + snippet;
-                resultsSection.appendChild(div);
-            });
-            newsContainer.appendChild(resultsSection);
-        }
-
-        // QnA anzeigen
-        if (data.qnas && data.qnas.length > 0) {
-            let qnaSection = document.createElement("div");
-            qnaSection.innerHTML = "<h3>Fragen & Antworten</h3>";
-            data.qnas.forEach(qna => {
-                let div = document.createElement("div");
-                div.classList.add("qna-item");
-                let question = `<p><strong>Frage:</strong> ${qna.question}</p>`;
-                let answer = `<p><strong>Antwort:</strong> ${qna.answer}</p>`;
-                div.innerHTML = question + answer;
-                qnaSection.appendChild(div);
-            });
-            newsContainer.appendChild(qnaSection);
-        }
-
-        // Videos anzeigen
-        if (data.videos && data.videos.length > 0) {
-            let videoSection = document.createElement("div");
-            videoSection.innerHTML = "<h3>Videos</h3>";
-            data.videos.forEach(video => {
-                let div = document.createElement("div");
-                div.classList.add("video-item");
-                // YouTube-URL in Embed-URL umwandeln, falls zutreffend
-                let embedUrl = video.src.includes("youtube.com/watch?v=")
-                    ? video.src.replace("watch?v=", "embed/")
-                    : video.src;
-                let iframe = `<iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
-                div.innerHTML = iframe;
-                videoSection.appendChild(div);
-            });
-            newsContainer.appendChild(videoSection);
-        }
-
-        // Verwandte Themen anzeigen
-        if (data.related && data.related.length > 0) {
-            let relatedSection = document.createElement("div");
-            relatedSection.innerHTML = "<h3>Verwandte Themen</h3>";
-            let list = "<ul>";
-            data.related.forEach(item => {
-                list += `<li>${item}</li>`;
-            });
-            list += "</ul>";
-            relatedSection.innerHTML += list;
-            newsContainer.appendChild(relatedSection);
-        }
+        
+        // Show loading spinner
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'text-center my-5';
+        loadingSpinner.innerHTML = `
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Processing your request...</p>
+        `;
+        newsContainer.appendChild(loadingSpinner);
+        
+        // Simulate loading time (remove in production)
+        setTimeout(() => {
+            newsContainer.innerHTML = "";
+            
+            // Create container for results
+            const resultsContainer = document.createElement('div');
+            resultsContainer.className = 'news-results';
+            
+            // Results section
+            if (data.results && data.results.length > 0) {
+                const resultsSection = document.createElement("div");
+                resultsSection.className = 'mb-5';
+                resultsSection.innerHTML = "<h3 class='mb-4'>Latest News</h3>";
+                
+                data.results.forEach(result => {
+                    const card = document.createElement("div");
+                    card.className = "card mb-4 shadow-sm fade-in";
+                    
+                    const cardBody = document.createElement("div");
+                    cardBody.className = "card-body";
+                    
+                    const title = document.createElement("h4");
+                    title.className = "card-title";
+                    const titleLink = document.createElement("a");
+                    titleLink.href = result.url || "#";
+                    titleLink.target = "_blank";
+                    titleLink.textContent = result.title || "Untitled";
+                    titleLink.className = "text-decoration-none";
+                    title.appendChild(titleLink);
+                    
+                    const description = document.createElement("p");
+                    description.className = "card-text";
+                    description.textContent = result.description || "";
+                    
+                    const snippet = document.createElement("p");
+                    snippet.className = "card-text small text-muted";
+                    snippet.innerHTML = result.snippets ? `<strong>Excerpt:</strong> ${result.snippets}` : "";
+                    
+                    const source = document.createElement("div");
+                    source.className = "d-flex align-items-center mt-3";
+                    source.innerHTML = `
+                        <i data-lucide="globe" class="me-2 text-primary"></i>
+                        <small class="text-muted">Source: ${new URL(result.url || "https://example.com").hostname}</small>
+                    `;
+                    
+                    cardBody.appendChild(title);
+                    cardBody.appendChild(description);
+                    cardBody.appendChild(snippet);
+                    cardBody.appendChild(source);
+                    card.appendChild(cardBody);
+                    
+                    resultsSection.appendChild(card);
+                });
+                
+                resultsContainer.appendChild(resultsSection);
+            } else {
+                const noResults = document.createElement("div");
+                noResults.className = "alert alert-info";
+                noResults.innerHTML = `
+                    <i data-lucide="info" class="me-2"></i>
+                    No news results found for this topic. Try a different search term.
+                `;
+                resultsContainer.appendChild(noResults);
+            }
+            
+            // Q&A section
+            if (data.qnas && data.qnas.length > 0) {
+                const qnaSection = document.createElement("div");
+                qnaSection.className = 'mb-5';
+                qnaSection.innerHTML = "<h3 class='mb-4'>Questions & Answers</h3>";
+                
+                data.qnas.forEach(qna => {
+                    const card = document.createElement("div");
+                    card.className = "card mb-4 shadow-sm fade-in";
+                    
+                    const cardBody = document.createElement("div");
+                    cardBody.className = "card-body";
+                    
+                    const question = document.createElement("h5");
+                    question.className = "card-title d-flex align-items-center";
+                    question.innerHTML = `<i data-lucide="help-circle" class="me-2 text-primary"></i> ${qna.question}`;
+                    
+                    const answer = document.createElement("p");
+                    answer.className = "card-text";
+                    answer.innerHTML = `<strong>Answer:</strong> ${qna.answer}`;
+                    
+                    cardBody.appendChild(question);
+                    cardBody.appendChild(answer);
+                    card.appendChild(cardBody);
+                    
+                    qnaSection.appendChild(card);
+                });
+                
+                resultsContainer.appendChild(qnaSection);
+            }
+            
+            // Videos section
+            if (data.videos && data.videos.length > 0) {
+                const videoSection = document.createElement("div");
+                videoSection.className = 'mb-5';
+                videoSection.innerHTML = "<h3 class='mb-4'>Related Videos</h3>";
+                
+                const videoRow = document.createElement("div");
+                videoRow.className = "row g-4";
+                
+                data.videos.forEach(video => {
+                    const col = document.createElement("div");
+                    col.className = "col-md-6 col-lg-4 fade-in";
+                    
+                    const card = document.createElement("div");
+                    card.className = "card h-100 shadow-sm";
+                    
+                    // YouTube-URL in Embed-URL umwandeln, falls zutreffend
+                    let embedUrl = video.src.includes("youtube.com/watch?v=")
+                        ? video.src.replace("watch?v=", "embed/")
+                        : video.src;
+                    
+                    const iframe = document.createElement("div");
+                    iframe.className = "ratio ratio-16x9";
+                    iframe.innerHTML = `<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                    
+                    const cardBody = document.createElement("div");
+                    cardBody.className = "card-body";
+                    cardBody.innerHTML = `
+                        <h5 class="card-title">${video.title || "Video"}</h5>
+                        <p class="card-text small text-muted">${video.description || ""}</p>
+                    `;
+                    
+                    card.appendChild(iframe);
+                    card.appendChild(cardBody);
+                    col.appendChild(card);
+                    videoRow.appendChild(col);
+                });
+                
+                videoSection.appendChild(videoRow);
+                resultsContainer.appendChild(videoSection);
+            }
+            
+            // Related topics section
+            if (data.related && data.related.length > 0) {
+                const relatedSection = document.createElement("div");
+                relatedSection.className = 'mb-5';
+                relatedSection.innerHTML = "<h3 class='mb-4'>Related Topics</h3>";
+                
+                const topicsContainer = document.createElement("div");
+                topicsContainer.className = "d-flex flex-wrap gap-2";
+                
+                data.related.forEach(item => {
+                    const badge = document.createElement("a");
+                    badge.href = "#";
+                    badge.className = "badge bg-light text-primary text-decoration-none p-2 fade-in";
+                    badge.innerHTML = `<i data-lucide="hash" class="me-1"></i> ${item}`;
+                    badge.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (input) {
+                            input.value = item;
+                            if (btn) btn.click();
+                        }
+                    });
+                    
+                    topicsContainer.appendChild(badge);
+                });
+                
+                relatedSection.appendChild(topicsContainer);
+                resultsContainer.appendChild(relatedSection);
+            }
+            
+            newsContainer.appendChild(resultsContainer);
+            
+            // Initialize Lucide icons for dynamically added content
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }, 1000); // Simulated loading time
     }
-
-    if (btn) {
+    
+    if (btn && input) {
         btn.addEventListener('click', function() {
             const topic = input.value.trim();
             if (!topic) {
-                alert("Bitte geben Sie ein Thema ein.");
+                // Show error toast
+                const toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                toastContainer.innerHTML = `
+                    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header bg-danger text-white">
+                            <i data-lucide="alert-circle" class="me-2"></i>
+                            <strong class="me-auto">Error</strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            Please enter a topic to search for news.
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toastContainer);
+                
+                // Initialize Lucide icons for toast
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+                
+                // Remove toast after 3 seconds
+                setTimeout(() => {
+                    toastContainer.remove();
+                }, 3000);
+                
                 return;
             }
+            
             btn.disabled = true;
-            newsContainer.textContent = "Lade Nachrichten...";
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`;
+            
+            if (newsContainer) {
+                newsContainer.innerHTML = `
+                    <div class="text-center my-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Searching for news about "${topic}"...</p>
+                    </div>
+                `;
+            }
             
             fetch('/get_news', {
                 method: 'POST',
@@ -90,8 +306,10 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 btn.disabled = false;
+                btn.innerHTML = 'Get News';
+                
                 if (!response.ok) {
-                    throw new Error('Fehler beim Abrufen der Nachrichten');
+                    throw new Error('Error retrieving news');
                 }
                 return response.json();
             })
@@ -99,8 +317,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayNews(data);
             })
             .catch(error => {
-                newsContainer.textContent = error.message;
+                if (newsContainer) {
+                    newsContainer.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            <i data-lucide="alert-triangle" class="me-2"></i>
+                            ${error.message}
+                        </div>
+                    `;
+                    
+                    // Initialize Lucide icons for error message
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
+                    }
+                }
             });
+        });
+        
+        // Allow pressing Enter in the input field to trigger the search
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                btn.click();
+            }
+        });
+    }
+    
+    // Pricing toggle functionality (if exists)
+    const pricingToggle = document.getElementById('pricing-toggle');
+    const monthlyPrices = document.querySelectorAll('.monthly-price');
+    const yearlyPrices = document.querySelectorAll('.yearly-price');
+    
+    if (pricingToggle) {
+        pricingToggle.addEventListener('change', function() {
+            if (this.checked) {
+                monthlyPrices.forEach(el => el.classList.add('d-none'));
+                yearlyPrices.forEach(el => el.classList.remove('d-none'));
+            } else {
+                monthlyPrices.forEach(el => el.classList.remove('d-none'));
+                yearlyPrices.forEach(el => el.classList.add('d-none'));
+            }
         });
     }
 });
