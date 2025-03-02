@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #007bff; /* A more modern blue */
+  --secondary-color: #6c757d; /* A neutral gray */
+  --light-gray: #f8f9fa; /* A very light gray for backgrounds */
+  --text-color: #343a40; /* Dark gray for text */
+  --accent-color: #28a745; /* Keeping a toned-down green as an accent */
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* A more modern font */
+    margin: 0;
+    padding: 20px;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+/* Custom styles */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+.btn-success {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Feature Section */
+.feature-section {
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+/* Pricing Section */
+.pricing-section {
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+.pricing-section h2 {
+    margin-bottom: 20px;
+}
+
+.pricing-section .col-md-6 {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.pricing-section h4 {
+    margin-bottom: 10px;
+}
+
+.pricing-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.pricing-section li {
+    margin-bottom: 5px;
+}
+
+/* Call to Action Section */
+.cta-section {
+    padding: 30px;
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+}
+
+/* Navbar styles */
+.navbar {
+    margin-bottom: 20px;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #28a745;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #218838;
+}

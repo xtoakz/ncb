@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Home - Meine WebApp{% endblock %}
+{% block content %}
+    <div class="container">
+
+        <!-- Feature Section -->
+        <section class="py-5">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <h4>WhatsApp Integration</h4>
+                    <p>Get your newsletter on WhatsApp</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Telegram Integration</h4>
+                    <p>Get your newsletter on Telegram</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Email Integration</h4>
+                    <p>Get your newsletter on Email</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="py-5" style="background-color: var(--light-gray);">
+                    <h2>Choose your plan</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Free</h4>
+                            <p>Predefined topics</p>
+                            <ul>
+                                <li>Politics</li>
+                                <li>Sport</li>
+                                <li>Celebrities</li>
+                            </ul>
+                            <a href="#" class="btn btn-success">Get Started</a>
+                        </div>
+                        <div class="col-md-6" style="background-color: var(--light-gray);">
+                            <h4>Professional</h4>
+                            <h5>€9,99 / Monat</h5>
+                            <p>Customize topics and layout</p>
+                            <ul>
+                                <li>Customize Topics</li>
+                                <li>Customize Layout</li>
+                                <li>Priority Support</li>
+                            </ul>
+                            <a href="#" class="btn btn-success">Get Started</a>
+                        </div>
+                    </div>
+                </section>
+
+        <!-- Call to Action Section -->
+        <section class="py-5 text-center" style="background-color: #343a40; color: white;">
+            <h2>Get Started Today</h2>
+            <p>Get your customized newsletter via chat.</p>
+            <a href="#" class="btn btn-primary btn-lg" style="color: #fff;">Get Started</a>
+        </section>
+    </div>
+{% endblock %}
