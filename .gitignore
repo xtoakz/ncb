@@ -1,0 +1,41 @@
+# Umgebungsdateien
+.env
+*.env
+*.env.local
+*.env.development
+*.env.production
+*.env.test
+
+# Bytecode-Cache-Dateien
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtuelle Umgebungen
+.venv/
+venv/
+
+# Log-Dateien
+*.log
+logs/
+*.out
+*.err
+
+# IDE- und Editor-spezifische Dateien
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sonstige Cache- und Build-Dateien
+dist/
+build/
+*.egg-info/
+.DS_Store
+Thumbs.db
+
+
+__pycache__/
+**/__pycache__/
