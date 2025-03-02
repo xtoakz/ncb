@@ -1,192 +1,58 @@
 {% extends "base.html" %}
-{% block title %}About Us - NewsletterChat{% endblock %}
+{% block title %}About - Todo App{% endblock %}
 {% block content %}
-    <!-- About Hero Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="mb-4">About NewsletterChat</h1>
-                    <p class="lead mb-4">We're revolutionizing how people consume news by delivering personalized content directly to their favorite messaging platforms.</p>
-                    <p>Founded in 2023, NewsletterChat was born from a simple observation: people spend most of their time in messaging apps, yet still have to switch to different platforms to get their news.</p>
-                    <p>Our mission is to make staying informed effortless by bringing curated, relevant news directly to where you already are - your favorite chat applications.</p>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">About Todo App</h1>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Our Mission</h2>
+                    <p>At Todo App, our mission is to help people stay organized and boost their productivity. We believe that a simple, well-designed todo application can make a significant difference in how people manage their tasks and achieve their goals.</p>
+                    <p>We've created a clean, intuitive interface that makes it easy to create, organize, and track your tasks. With secure user accounts and cloud storage, your todos are always available wherever you go.</p>
                 </div>
-                <div class="col-lg-6">
-                    <img src="https://placehold.co/600x400" alt="NewsletterChat Team" class="img-fluid rounded shadow">
+            </div>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Our Story</h2>
+                    <p>Todo App was created by a team of developers who were frustrated with the complexity of existing task management solutions. We wanted something simple yet powerful, with just the right features to help people stay organized without overwhelming them.</p>
+                    <p>After months of development and testing, we launched Todo App with a focus on user experience and simplicity. Since then, we've been continuously improving the application based on user feedback.</p>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Our Technology</h2>
+                    <p>Todo App is built using modern web technologies to ensure a fast, responsive experience:</p>
+                    <ul>
+                        <li>Flask - A lightweight Python web framework</li>
+                        <li>Supabase - For authentication and database management</li>
+                        <li>Bootstrap 5 - For responsive design</li>
+                        <li>Lucide Icons - For beautiful, consistent iconography</li>
+                    </ul>
+                    <p>We prioritize security and performance, ensuring that your data is protected and the application runs smoothly on all devices.</p>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="h4 mb-3">Contact Us</h2>
+                    <p>We'd love to hear from you! If you have any questions, suggestions, or feedback, please don't hesitate to reach out:</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i data-lucide="mail" class="me-2" style="width: 18px; height: 18px;"></i>
+                            <a href="mailto:support@todoapp.com">support@todoapp.com</a>
+                        </li>
+                        <li class="mb-2">
+                            <i data-lucide="github" class="me-2" style="width: 18px; height: 18px;"></i>
+                            <a href="https://github.com/todoapp">github.com/todoapp</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Our Values Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>Our Values</h2>
-                <p class="lead">The principles that guide everything we do</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i data-lucide="target" class="feature-icon"></i>
-                            </div>
-                            <h4>Relevance</h4>
-                            <p>We believe news should be tailored to your interests. No more information overload or irrelevant content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i data-lucide="shield" class="feature-icon"></i>
-                            </div>
-                            <h4>Privacy</h4>
-                            <p>Your data is yours. We use your preferences only to deliver better content, never to sell to third parties.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i data-lucide="refresh-cw" class="feature-icon"></i>
-                            </div>
-                            <h4>Innovation</h4>
-                            <p>We're constantly exploring new ways to make news consumption more efficient and enjoyable.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>Meet Our Team</h2>
-                <p class="lead">The people behind NewsletterChat</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="card-img-top" alt="Jonas Wendel">
-                        <div class="card-body text-center">
-                            <h4>Jonas Wendel</h4>
-                            <p class="text-muted">Founder & CEO</p>
-                            <p>With over 10 years of experience in digital media, Jonas leads our vision and strategy.</p>
-                            <div class="d-flex justify-content-center gap-3 mt-3">
-                                <a href="#" class="text-primary"><i data-lucide="linkedin" class="social-icon"></i></a>
-                                <a href="#" class="text-primary"><i data-lucide="twitter" class="social-icon"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="card-img-top" alt="Anna Schmidt">
-                        <div class="card-body text-center">
-                            <h4>Anna Schmidt</h4>
-                            <p class="text-muted">CTO</p>
-                            <p>Anna oversees our technical infrastructure and ensures our platform runs smoothly.</p>
-                            <div class="d-flex justify-content-center gap-3 mt-3">
-                                <a href="#" class="text-primary"><i data-lucide="linkedin" class="social-icon"></i></a>
-                                <a href="#" class="text-primary"><i data-lucide="github" class="social-icon"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <img src="https://randomuser.me/api/portraits/men/67.jpg" class="card-img-top" alt="Markus Weber">
-                        <div class="card-body text-center">
-                            <h4>Markus Weber</h4>
-                            <p class="text-muted">Content Director</p>
-                            <p>Markus ensures that our content is accurate, relevant, and engaging for all users.</p>
-                            <div class="d-flex justify-content-center gap-3 mt-3">
-                                <a href="#" class="text-primary"><i data-lucide="linkedin" class="social-icon"></i></a>
-                                <a href="#" class="text-primary"><i data-lucide="twitter" class="social-icon"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>Frequently Asked Questions</h2>
-                <p class="lead">Everything you need to know about our service</p>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="accordion" id="faqAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
-                                    How does NewsletterChat work?
-                                </button>
-                            </h2>
-                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    NewsletterChat delivers personalized news directly to your preferred messaging platform. You select your topics of interest, choose your delivery platform (WhatsApp, Telegram, or Email), and we'll send you curated content at your preferred frequency.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
-                                    Is my personal information secure?
-                                </button>
-                            </h2>
-                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Absolutely. We take data privacy very seriously. We only use your contact information to deliver your newsletters and your topic preferences to customize content. We never sell your data to third parties.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
-                                    Can I change my topics or delivery platform?
-                                </button>
-                            </h2>
-                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Yes, you can change your preferences at any time through your account settings. You can update your topics, switch between delivery platforms, or adjust your delivery frequency with just a few clicks.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
-                                    What's the difference between free and professional plans?
-                                </button>
-                            </h2>
-                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    The free plan gives you access to predefined topics like Politics, Sports, and Celebrities with daily updates. The Professional plan allows you to create unlimited custom topics, receive premium formatting, choose multiple delivery times, and get priority support.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact CTA Section -->
-    <section class="py-5 bg-primary text-white text-center">
-        <div class="container">
-            <h2 class="mb-4">Have More Questions?</h2>
-            <p class="lead mb-4">Our team is always ready to help you with any questions or concerns.</p>
-            <a href="mailto:support@wddk-commerce.de" class="btn btn-light btn-lg">Contact Us</a>
-        </div>
-    </section>
+    </div>
+</div>
 {% endblock %}

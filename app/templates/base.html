@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}NewsletterChat{% endblock %}</title>
+    <title>{% block title %}Todo App{% endblock %}</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Lucide Icons -->
@@ -16,8 +16,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}">
-                <i data-lucide="mail-plus" class="me-2"></i>
-                <span>NewsletterChat</span>
+                <i data-lucide="check-square" class="me-2"></i>
+                <span>Todo App</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,16 +34,34 @@
                             <i data-lucide="info" class="nav-icon"></i> About
                         </a>
                     </li>
+                    {% if session.get('user') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ url_for('todo.dashboard') }}">
+                            <i data-lucide="list-todo" class="nav-icon"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.profile') }}">
+                            <i data-lucide="user" class="nav-icon"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                            <i data-lucide="log-out" class="nav-icon"></i> Logout
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.signup') }}">
                             <i data-lucide="user-plus" class="nav-icon"></i> Sign Up
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">
                             <i data-lucide="log-in" class="nav-icon"></i> Login
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -59,12 +77,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="mb-3">NewsletterChat</h5>
-                    <p>Get personalized news delivered directly to your favorite messaging platforms.</p>
+                    <h5 class="mb-3">Todo App</h5>
+                    <p>A simple and efficient way to manage your tasks and stay organized.</p>
                     <div class="d-flex gap-3 mb-3">
-                        <a href="#" class="text-light"><i data-lucide="facebook" class="social-icon"></i></a>
+                        <a href="#" class="text-light"><i data-lucide="github" class="social-icon"></i></a>
                         <a href="#" class="text-light"><i data-lucide="twitter" class="social-icon"></i></a>
-                        <a href="#" class="text-light"><i data-lucide="instagram" class="social-icon"></i></a>
+                        <a href="#" class="text-light"><i data-lucide="linkedin" class="social-icon"></i></a>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -72,8 +90,11 @@
                     <ul class="list-unstyled">
                         <li><a href="{{ url_for('main.index') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Home</a></li>
                         <li><a href="{{ url_for('main.about') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> About</a></li>
-                        <li><a href="#" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Pricing</a></li>
-                        <li><a href="#" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> FAQ</a></li>
+                        {% if session.get('user') %}
+                        <li><a href="{{ url_for('todo.dashboard') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Dashboard</a></li>
+                        {% else %}
+                        <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Login</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="col-md-3">
@@ -81,11 +102,11 @@
                     <ul class="list-unstyled">
                         <li class="d-flex align-items-center mb-2">
                             <i data-lucide="mail" class="footer-icon me-2"></i>
-                            <a href="mailto:support@wddk-commerce.de" class="text-light text-decoration-none">support@wddk-commerce.de</a>
+                            <a href="mailto:support@todoapp.com" class="text-light text-decoration-none">support@todoapp.com</a>
                         </li>
                         <li class="d-flex align-items-center mb-2">
-                            <i data-lucide="phone" class="footer-icon me-2"></i>
-                            <span>+49 421 52636100</span>
+                            <i data-lucide="github" class="footer-icon me-2"></i>
+                            <a href="https://github.com/todoapp" class="text-light text-decoration-none">github.com/todoapp</a>
                         </li>
                     </ul>
                 </div>
@@ -93,7 +114,7 @@
             <hr class="my-4">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; 2025 NewsletterChat | <a href="https://wddk.company" class="text-light">wddk</a></p>
+                    <p class="mb-0">&copy; 2023 Todo App | All rights reserved</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="{{ url_for('main.imprint') }}" class="text-light text-decoration-none">Imprint</a> |

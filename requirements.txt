@@ -3,3 +3,4 @@ requests==2.28.1
 supabase
 psycopg2
 Flask-Bootstrap
+Flask-Session

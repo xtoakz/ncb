@@ -1,189 +1,117 @@
-# WhatsApp Newsletter Automation
+# Todo App
 
-A private project by wddk to automate the process of creating and sending newsletters via WhatsApp, leveraging news content from Ragy.ai.
+A simple and efficient web application for managing your tasks and boosting productivity. Built with Flask and Supabase.
 
 ## Features
 
-- **User Authentication**: Secure login/signup through Supabase
-- **Newsletter Creation**: 
-  - Manual content entry
-  - Ragy.ai news integration
-- **Newsletter Management**:
-  - Preview functionality
-- **WhatsApp Delivery**: Automated sending via Twilio WhatsApp API
+- **User Authentication**: Secure sign up and login functionality using Supabase Auth
+- **Task Management**: Create, read, update, and delete tasks
+- **Dashboard**: User-friendly dashboard to manage all your tasks
+- **Responsive Design**: Works on desktop and mobile devices
+- **Modern UI**: Clean and intuitive interface with shadcn-inspired components
 
 ## Tech Stack
 
-### Frontend
-- Jinja2 templates
-- Tailwind CSS
-- Responsive design for all devices
+- **Frontend**: HTML, CSS, JavaScript, Bootstrap 5
+- **Backend**: Flask (Python)
+- **Database**: PostgreSQL (via Supabase)
+- **Authentication**: Supabase Auth
+- **Icons**: Lucide Icons
 
-### Backend
-- Flask (version >= 2.0)
-- Python (version >= 3.8)
-- Supabase (database, authentication, storage & queue)
-- Twilio WhatsApp API
-- Ragy.ai News API
+## Installation
 
-## Architecture
+### Prerequisites
 
-The application follows a modular structure with:
-- Clear separation of concerns
-- Service layer for API integrations
-- Asynchronous processing using Supabase queue
+- Python 3.7+
+- pip (Python package manager)
+- Supabase account (for database and authentication)
 
-## Database Design
+### Setup
 
-- Users: account information
-- Newsletters: content and metadata
-- Subscribers: contact information
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/todo-app.git
+   cd todo-app
+   ```
 
-## Security Features
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-- Environment-based configuration
-- Secure credential management
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Getting Started
+4. Set up environment variables:
+   ```bash
+   export FLASK_APP=run.py
+   export FLASK_ENV=development
+   export SECRET_KEY=your_secret_key
+   export SUPABASE_URL=your_supabase_url
+   export SUPABASE_KEY=your_supabase_key
+   ```
+   
+   On Windows:
+   ```bash
+   set FLASK_APP=run.py
+   set FLASK_ENV=development
+   set SECRET_KEY=your_secret_key
+   set SUPABASE_URL=your_supabase_url
+   set SUPABASE_KEY=your_supabase_key
+   ```
 
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Set up environment variables (see `.env.example`)
-4. Run development server: `flask run`
+5. Set up the database:
+   - Create a new project in Supabase
+   - Run the SQL queries in `supabase_schema.sql` in the Supabase SQL Editor
 
-## Deployment
+6. Run the application:
+   ```bash
+   flask run
+   ```
 
-The application is designed for easy deployment to:
-- Heroku
-- AWS Elastic Beanstalk
-- Docker containers
+7. Open your browser and navigate to `http://localhost:5000`
 
-## Development Roadmap
+## Usage
 
-### 1. Project Setup & Configuration
+1. Sign up for a new account or log in with existing credentials
+2. Add new tasks with title and description
+3. Mark tasks as completed when done
+4. Edit or delete tasks as needed
+5. View your profile information
 
-**Backend Tasks:**
-- [ ] Create GitHub repository and initial structure
-- [ ] Set up Flask application framework (app.py, blueprints, etc.)
-- [ ] Configure environment variables and settings
-- [ ] Create Supabase project and initial database schema
-- [ ] Set up project documentation
+## Project Structure
 
-**Frontend Tasks:**
-- [ ] Initialize Tailwind CSS configuration
-- [ ] Create base layout templates with Jinja2
-- [ ] Set up basic responsive design framework
-- [ ] Design style guide and UI components
+```
+todo-app/
+├── app/
+│   ├── static/
+│   │   ├── css/
+│   │   └── js/
+│   ├── templates/
+│   │   ├── auth/
+│   │   ├── todo/
+│   │   └── ...
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── routes.py
+│   └── todo.py
+├── supabase_schema.sql
+├── supabase_client.py
+├── config.py
+├── run.py
+└── requirements.txt
+```
 
-**Collaboration Points:**
-- Project architecture discussion
-- Schema design approval
-- API endpoint planning
+## License
 
-### 2. Authentication System
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-**Backend Tasks:**
-- [ ] Implement Supabase authentication in Flask
-- [ ] Create middleware for route protection
-- [ ] Set up user session management
-- [ ] Create database hooks for user creation/management
+## Acknowledgements
 
-**Frontend Tasks:**
-- [ ] Design and implement login page
-- [ ] Design and implement signup page
-- [ ] Create account management interface
-- [ ] Build password reset functionality
-
-**Collaboration Points:**
-- Auth flow testing
-- Session management integration
-
-### 3. Newsletter Creation
-
-**Backend Tasks:**
-- [ ] Develop Ragy.ai API integration service
-- [ ] Create database models for newsletter storage
-- [ ] Implement CRUD operations for newsletters
-- [ ] Set up content validation and sanitization
-
-**Frontend Tasks:**
-- [ ] Design newsletter editor interface
-- [ ] Implement rich text editor integration
-- [ ] Create Ragy.ai content selection interface
-- [ ] Build newsletter metadata form components
-
-**Collaboration Points:**
-- API response formatting
-- Content preview rendering
-
-### 4. Subscriber Management
-
-**Backend Tasks:**
-- [ ] Create subscriber database models
-- [ ] Implement subscriber CRUD operations
-- [ ] Develop phone number validation service
-- [ ] Create import/export functionality
-
-**Frontend Tasks:**
-- [ ] Design subscriber management interface
-- [ ] Build subscriber list with filters
-- [ ] Create add/edit subscriber forms
-- [ ] Implement CSV import interface
-
-**Collaboration Points:**
-- Subscriber data format
-- Validation error handling
-
-### 5. WhatsApp Integration
-
-**Backend Tasks:**
-- [ ] Set up Twilio WhatsApp API integration
-- [ ] Create message formatting service
-- [ ] Implement Supabase queue for message sending
-- [ ] Develop status tracking and error handling
-
-**Frontend Tasks:**
-- [ ] Design message sending interface
-- [ ] Build recipient selection component
-- [ ] Create message preview functionality
-- [ ] Implement sending confirmation dialog
-
-**Collaboration Points:**
-- Message template design
-- Status notification system
-
-### 6. Testing & Deployment
-
-**Backend Tasks:**
-- [ ] Write unit tests for API endpoints
-- [ ] Implement error logging
-- [ ] Optimize database queries
-- [ ] Prepare deployment configuration
-
-**Frontend Tasks:**
-- [ ] Test UI across devices
-- [ ] Implement error handling in forms
-- [ ] Optimize assets and loading performance
-- [ ] Create user documentation
-
-**Collaboration Points:**
-- End-to-end testing
-- Performance optimization
-
-### 7. Feature Enhancements (Optional)
-
-**Backend Possibilities:**
-- [ ] Implement message scheduling
-- [ ] Create basic analytics
-- [ ] Add webhook support for status updates
-- [ ] Develop multi-tenant capabilities
-
-**Frontend Possibilities:**
-- [ ] Build dashboard with usage statistics
-- [ ] Create template management system
-- [ ] Implement drag-and-drop editor
-- [ ] Add image optimization tools
-
-**Collaboration Points:**
-- Feature prioritization
-- Integration testing
+- [Flask](https://flask.palletsprojects.com/)
+- [Supabase](https://supabase.io/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Lucide Icons](https://lucide.dev/)
