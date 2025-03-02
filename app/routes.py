@@ -4,9 +4,9 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
-    # If user is logged in, redirect to dashboard
+    # If user is logged in, redirect to newsletter dashboard
     if 'user' in session:
-        return redirect(url_for('todo.dashboard'))
+        return redirect(url_for('newsletter.dashboard'))
     return render_template('index.html')
 
 @bp.route('/about')

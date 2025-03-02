@@ -39,40 +39,111 @@ def sign_out(jwt):
     except Exception as e:
         return {"error": str(e)}
 
-# Todo operations
-def get_todos(user_id):
-    """Get all todos for a user"""
+# Newsletter operations
+def get_newsletters(user_id):
+    """Get all newsletters for a user"""
     try:
-        response = supabase.table('todos').select('*').eq('user_id', user_id).execute()
+        response = supabase.table('newsletters').select('*').eq('user_id', user_id).execute()
         return response.data
     except Exception as e:
         return {"error": str(e)}
 
-def create_todo(user_id, title, description="", completed=False):
-    """Create a new todo for a user"""
+def create_newsletter(user_id, title, content="", delivery_platform="whatsapp"):
+    """Create a new newsletter for a user"""
     try:
-        response = supabase.table('todos').insert({
+        response = supabase.table('newsletters').insert({
             'user_id': user_id,
             'title': title,
-            'description': description,
-            'completed': completed
+            'content': content,
+            'delivery_platform': delivery_platform,
+            'status': 'draft'
         }).execute()
         return response.data
     except Exception as e:
         return {"error": str(e)}
 
-def update_todo(todo_id, data):
-    """Update a todo"""
+def update_newsletter(newsletter_id, data):
+    """Update a newsletter"""
     try:
-        response = supabase.table('todos').update(data).eq('id', todo_id).execute()
+        response = supabase.table('newsletters').update(data).eq('id', newsletter_id).execute()
         return response.data
     except Exception as e:
         return {"error": str(e)}
 
-def delete_todo(todo_id):
-    """Delete a todo"""
+def delete_newsletter(newsletter_id):
+    """Delete a newsletter"""
     try:
-        response = supabase.table('todos').delete().eq('id', todo_id).execute()
+        response = supabase.table('newsletters').delete().eq('id', newsletter_id).execute()
         return {"success": True}
+    except Exception as e:
+        return {"error": str(e)}
+
+def send_newsletter(newsletter_id):
+    """Send a newsletter"""
+    try:
+        # First, get the newsletter
+        response = supabase.table('newsletters').select('*').eq('id', newsletter_id).execute()
+        if not response.data:
+            return {"error": "Newsletter not found"}
+        
+        newsletter = response.data[0]
+        
+        # Update the status to 'sent'
+        update_response = supabase.table('newsletters').update({
+            'status': 'sent',
+            'sent_at': 'now()'
+        }).eq('id', newsletter_id).execute()
+        
+        # In a real application, you would integrate with WhatsApp/Telegram/Email APIs here
+        # For now, we'll just return success
+        return {"success": True, "message": f"Newsletter sent via {newsletter['delivery_platform']}"}
+    except Exception as e:
+        return {"error": str(e)}
+
+def get_news(topic):
+    """Get news articles based on a topic"""
+    try:
+        # In a real application, you would integrate with a news API here
+        # For now, we'll return mock data
+        import datetime
+        current_date = datetime.datetime.now().strftime('%d.%m.%Y')
+        
+        mock_data = {
+            "results": [
+                {
+                    "title": f"Latest news about {topic}",
+                    "description": f"This is a sample description about {topic}.",
+                    "snippets": f"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Topics related to {topic} are trending today.",
+                    "url": "https://example.com/news/1",
+                    "source": "example.com"
+                },
+                {
+                    "title": f"Breaking: New developments in {topic}",
+                    "description": f"Recent updates about {topic} that you should know.",
+                    "snippets": f"More information about {topic} is expected to be released soon.",
+                    "url": "https://example.com/news/2",
+                    "source": "example.com"
+                },
+                {
+                    "title": f"Analysis: What {topic} means for the future",
+                    "description": f"Experts weigh in on the implications of {topic}.",
+                    "snippets": f"Experts believe that {topic} will have significant impact on various sectors.",
+                    "url": "https://example.com/news/3",
+                    "source": "example.com"
+                }
+            ],
+            "qnas": [
+                {
+                    "question": f"What is the latest news about {topic}?",
+                    "answer": f"The latest news about {topic} involves new developments and research findings."
+                },
+                {
+                    "question": f"Why is {topic} important?",
+                    "answer": f"{topic} is important because it affects multiple aspects of daily life."
+                }
+            ]
+        }
+        
+        return mock_data
     except Exception as e:
         return {"error": str(e)}

@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Newsletter Management{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>My Newsletters</h2>
+                <div>
+                    <a href="{{ url_for('auth.profile') }}" class="btn btn-outline-primary me-2">
+                        <i data-lucide="user" class="me-1" style="width: 18px; height: 18px;"></i> Profile
+                    </a>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">
+                        <i data-lucide="log-out" class="me-1" style="width: 18px; height: 18px;"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title">Create New Newsletter</h4>
+                    <form action="{{ url_for('newsletter.create') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea class="form-control" id="content" name="content" rows="5"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="delivery_platform" class="form-label">Delivery Platform</label>
+                            <select class="form-select" id="delivery_platform" name="delivery_platform">
+                                <option value="whatsapp">WhatsApp</option>
+                                <option value="telegram">Telegram</option>
+                                <option value="email">Email</option>
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i data-lucide="plus" class="me-1" style="width: 18px; height: 18px;"></i> Create Newsletter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h4 class="card-title">News Integration</h4>
+                    <p class="text-muted">Search for news to include in your newsletter</p>
+                    <div class="mb-3">
+                        <label for="news-topic" class="form-label">Topic</label>
+                        <input type="text" class="form-control" id="news-topic">
+                    </div>
+                    <div class="d-grid">
+                        <button id="search-news-btn" class="btn btn-secondary">
+                            <i data-lucide="search" class="me-1" style="width: 18px; height: 18px;"></i> Search News
+                        </button>
+                    </div>
+                    <div id="news-results" class="mt-3" style="display: none;">
+                        <h5>Results</h5>
+                        <div id="news-items" class="list-group">
+                            <!-- News items will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Newsletter List</h4>
+                    
+                    {% if newsletters and newsletters|length > 0 %}
+                        <div class="list-group">
+                            {% for newsletter in newsletters %}
+                                <div class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-1">{{ newsletter.title }}</h5>
+                                            <p class="mb-1 text-muted">
+                                                <span class="badge bg-{{ 'success' if newsletter.status == 'sent' else 'secondary' }}">
+                                                    {{ newsletter.status|capitalize }}
+                                                </span>
+                                                <span class="ms-2">
+                                                    <i data-lucide="{{ 'message-circle' if newsletter.delivery_platform == 'whatsapp' else ('send' if newsletter.delivery_platform == 'telegram' else 'mail') }}" 
+                                                       style="width: 16px; height: 16px;"></i>
+                                                    {{ newsletter.delivery_platform|capitalize }}
+                                                </span>
+                                            </p>
+                                            <small>Created: {{ newsletter.created_at|default('N/A') }}</small>
+                                            {% if newsletter.sent_at %}
+                                                <small class="ms-2">Sent: {{ newsletter.sent_at }}</small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="btn-group">
+                                            {% if newsletter.status == 'draft' %}
+                                                <form action="{{ url_for('newsletter.send', newsletter_id=newsletter.id) }}" method="POST" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                            <button type="button" class="btn btn-sm btn-outline-primary edit-newsletter-btn" data-bs-toggle="modal" data-bs-target="#editNewsletterModal" 
+                                                data-newsletter-id="{{ newsletter.id }}"
+                                                data-newsletter-title="{{ newsletter.title }}"
+                                                data-newsletter-content="{{ newsletter.content }}"
+                                                data-newsletter-platform="{{ newsletter.delivery_platform }}"
+                                                data-newsletter-status="{{ newsletter.status }}">
+                                                <i data-lucide="edit" style="width: 16px; height: 16px;"></i>
+                                            </button>
+                                            <form action="{{ url_for('newsletter.delete', newsletter_id=newsletter.id) }}" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this newsletter?')">
+                                                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button class="btn btn-sm btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#content-{{ newsletter.id }}">
+                                            Show content
+                                        </button>
+                                        <div class="collapse mt-2" id="content-{{ newsletter.id }}">
+                                            <div class="card card-body bg-light">
+                                                {{ newsletter.content|default('No content')|nl2br }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-lucide="mail" style="width: 48px; height: 48px;" class="text-muted mb-3"></i>
+                            <h5>No newsletters yet</h5>
+                            <p class="text-muted">Create your first newsletter to get started!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Newsletter Modal -->
+<div class="modal fade" id="editNewsletterModal" tabindex="-1" aria-labelledby="editNewsletterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNewsletterModalLabel">Edit Newsletter</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editNewsletterForm" action="" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit-title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="edit-title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-content" class="form-label">Content</label>
+                        <textarea class="form-control" id="edit-content" name="content" rows="10"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit-delivery_platform" class="form-label">Delivery Platform</label>
+                            <select class="form-select" id="edit-delivery_platform" name="delivery_platform">
+                                <option value="whatsapp">WhatsApp</option>
+                                <option value="telegram">Telegram</option>
+                                <option value="email">Email</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit-status" class="form-label">Status</label>
+                            <select class="form-select" id="edit-status" name="status">
+                                <option value="draft">Draft</option>
+                                <option value="sent">Sent</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle edit newsletter modal
+        const editNewsletterModal = document.getElementById('editNewsletterModal');
+        if (editNewsletterModal) {
+            editNewsletterModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const newsletterId = button.getAttribute('data-newsletter-id');
+                const newsletterTitle = button.getAttribute('data-newsletter-title');
+                const newsletterContent = button.getAttribute('data-newsletter-content');
+                const newsletterPlatform = button.getAttribute('data-newsletter-platform');
+                const newsletterStatus = button.getAttribute('data-newsletter-status');
+                
+                const form = document.getElementById('editNewsletterForm');
+                form.action = `/newsletter/update/${newsletterId}`;
+                
+                const titleInput = document.getElementById('edit-title');
+                const contentInput = document.getElementById('edit-content');
+                const platformSelect = document.getElementById('edit-delivery_platform');
+                const statusSelect = document.getElementById('edit-status');
+                
+                titleInput.value = newsletterTitle;
+                contentInput.value = newsletterContent || '';
+                platformSelect.value = newsletterPlatform;
+                statusSelect.value = newsletterStatus;
+            });
+        }
+        
+        // Handle news search
+        const searchNewsBtn = document.getElementById('search-news-btn');
+        const newsTopicInput = document.getElementById('news-topic');
+        const newsResults = document.getElementById('news-results');
+        const newsItems = document.getElementById('news-items');
+        
+        if (searchNewsBtn) {
+            searchNewsBtn.addEventListener('click', function() {
+                const topic = newsTopicInput.value.trim();
+                if (!topic) {
+                    alert('Please enter a topic to search for');
+                    return;
+                }
+                
+                // Show loading state
+                searchNewsBtn.disabled = true;
+                searchNewsBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Searching...';
+                
+                // Send request to get news
+                fetch('/newsletter/get_news', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ topic: topic }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Reset button
+                    searchNewsBtn.disabled = false;
+                    searchNewsBtn.innerHTML = '<i data-lucide="search" class="me-1" style="width: 18px; height: 18px;"></i> Search News';
+                    
+                    // Show results
+                    newsResults.style.display = 'block';
+                    newsItems.innerHTML = '';
+                    
+                    if (data.results && data.results.length > 0) {
+                        data.results.forEach(article => {
+                            const item = document.createElement('div');
+                            item.className = 'list-group-item list-group-item-action';
+                            item.innerHTML = `
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">${article.title}</h6>
+                                    <small>${article.source}</small>
+                                </div>
+                                <p class="mb-1">${article.description}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small><a href="${article.url}" target="_blank">Read more</a></small>
+                                    <button class="btn btn-sm btn-outline-primary add-to-newsletter" data-content="${article.title}: ${article.description}">
+                                        Add to newsletter
+                                    </button>
+                                </div>
+                            `;
+                            newsItems.appendChild(item);
+                        });
+                        
+                        // Add event listeners to "Add to newsletter" buttons
+                        document.querySelectorAll('.add-to-newsletter').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const content = this.getAttribute('data-content');
+                                const contentTextarea = document.getElementById('content');
+                                contentTextarea.value += (contentTextarea.value ? '\n\n' : '') + content;
+                            });
+                        });
+                    } else {
+                        newsItems.innerHTML = '<div class="list-group-item">No results found</div>';
+                    }
+                    
+                    // Initialize Lucide icons for new elements
+                    if (window.lucide) {
+                        lucide.createIcons();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    searchNewsBtn.disabled = false;
+                    searchNewsBtn.innerHTML = '<i data-lucide="search" class="me-1" style="width: 18px; height: 18px;"></i> Search News';
+                    alert('Error searching for news. Please try again.');
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}
