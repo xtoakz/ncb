@@ -1,59 +1,250 @@
 {% extends "base.html" %}
-{% block title %}Home - Meine WebApp{% endblock %}
+{% block title %}NewsletterChat - Personalized News in Your Favorite Chat App{% endblock %}
 {% block content %}
-    <div class="container">
-
-        <!-- Feature Section -->
-        <section class="py-5">
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <h4>WhatsApp Integration</h4>
-                    <p>Get your newsletter on WhatsApp</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 fade-in">
+                    <h1>Stay Informed, Your Way</h1>
+                    <p>Get personalized news and updates delivered directly to your favorite messaging platforms. No more app switching or information overload.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-light btn-lg">Get Started</a>
+                        <a href="#features" class="btn btn-outline-light btn-lg">Learn More</a>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <h4>Telegram Integration</h4>
-                    <p>Get your newsletter on Telegram</p>
-                </div>
-                <div class="col-md-4">
-                    <h4>Email Integration</h4>
-                    <p>Get your newsletter on Email</p>
+                <div class="col-lg-6 d-none d-lg-block text-center">
+                    <img src="https://placehold.co/600x400" alt="NewsletterChat Preview" class="img-fluid rounded shadow">
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Pricing Section -->
-        <section class="py-5" style="background-color: var(--light-gray);">
-                    <h2>Choose your plan</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4>Free</h4>
-                            <p>Predefined topics</p>
-                            <ul>
-                                <li>Politics</li>
-                                <li>Sport</li>
-                                <li>Celebrities</li>
-                            </ul>
-                            <a href="#" class="btn btn-success">Get Started</a>
+    <!-- Features Section -->
+    <section class="py-5" id="features">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Delivery on Your Terms</h2>
+                <p class="lead">Choose how you want to receive your personalized news</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="message-circle" class="feature-icon"></i>
                         </div>
-                        <div class="col-md-6" style="background-color: var(--light-gray);">
-                            <h4>Professional</h4>
-                            <h5>€9,99 / Monat</h5>
-                            <p>Customize topics and layout</p>
-                            <ul>
-                                <li>Customize Topics</li>
-                                <li>Customize Layout</li>
-                                <li>Priority Support</li>
-                            </ul>
-                            <a href="#" class="btn btn-success">Get Started</a>
+                        <h4>WhatsApp Integration</h4>
+                        <p>Receive your curated news directly in WhatsApp. No need to download another app or visit websites.</p>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
                         </div>
                     </div>
-                </section>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="send" class="feature-icon"></i>
+                        </div>
+                        <h4>Telegram Integration</h4>
+                        <p>Get your personalized news delivered to Telegram with rich media support and interactive elements.</p>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="mail" class="feature-icon"></i>
+                        </div>
+                        <h4>Email Integration</h4>
+                        <p>Classic but powerful. Receive beautifully formatted newsletters directly to your inbox.</p>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Call to Action Section -->
-        <section class="py-5 text-center" style="background-color: #343a40; color: white;">
-            <h2>Get Started Today</h2>
-            <p>Get your customized newsletter via chat.</p>
-            <a href="#" class="btn btn-primary btn-lg" style="color: #fff;">Get Started</a>
-        </section>
-    </div>
+    <!-- How It Works Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>How It Works</h2>
+                <p class="lead">Three simple steps to stay informed</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                <h3 class="mb-0">1</h3>
+                            </div>
+                            <h4>Choose Your Topics</h4>
+                            <p>Select from predefined topics or customize your own areas of interest.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                <h3 class="mb-0">2</h3>
+                            </div>
+                            <h4>Select Your Platform</h4>
+                            <p>Choose where you want to receive your news: WhatsApp, Telegram, or Email.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-transparent">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                <h3 class="mb-0">3</h3>
+                            </div>
+                            <h4>Stay Informed</h4>
+                            <p>Receive personalized, curated content directly to your chosen platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Choose Your Plan</h2>
+                <p class="lead">Simple, transparent pricing for everyone</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card pricing-card h-100">
+                        <div class="card-body">
+                            <h3>Free</h3>
+                            <div class="price">€0<span class="price-period">/month</span></div>
+                            <p>Perfect for casual news readers</p>
+                            <ul class="feature-list">
+                                <li><i data-lucide="check" class="text-success"></i> Predefined topics (Politics, Sports, Celebrities)</li>
+                                <li><i data-lucide="check" class="text-success"></i> Daily updates</li>
+                                <li><i data-lucide="check" class="text-success"></i> Basic formatting</li>
+                                <li><i data-lucide="x" class="text-muted"></i> Custom topics</li>
+                                <li><i data-lucide="x" class="text-muted"></i> Priority support</li>
+                            </ul>
+                            <a href="#" class="btn btn-outline-primary btn-lg w-100">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card pricing-card highlighted h-100">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">POPULAR</span>
+                            <h3>Professional</h3>
+                            <div class="price">€9.99<span class="price-period">/month</span></div>
+                            <p>For those who want complete customization</p>
+                            <ul class="feature-list">
+                                <li><i data-lucide="check" class="text-success"></i> All Free features</li>
+                                <li><i data-lucide="check" class="text-success"></i> Unlimited custom topics</li>
+                                <li><i data-lucide="check" class="text-success"></i> Premium formatting</li>
+                                <li><i data-lucide="check" class="text-success"></i> Multiple delivery times</li>
+                                <li><i data-lucide="check" class="text-success"></i> Priority support</li>
+                            </ul>
+                            <a href="#" class="btn btn-primary btn-lg w-100">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>What Our Users Say</h2>
+                <p class="lead">Join thousands of satisfied subscribers</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex mb-3">
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                            </div>
+                            <p class="testimonial-text">"NewsletterChat has completely changed how I consume news. No more endless scrolling through apps!"</p>
+                            <div class="d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah K." class="rounded-circle me-3" width="50">
+                                <div>
+                                    <h5 class="mb-0">Sarah K.</h5>
+                                    <small class="text-muted">Marketing Professional</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex mb-3">
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                            </div>
+                            <p class="testimonial-text">"I love getting my daily news briefing on WhatsApp. It's concise, relevant, and saves me so much time."</p>
+                            <div class="d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Michael T." class="rounded-circle me-3" width="50">
+                                <div>
+                                    <h5 class="mb-0">Michael T.</h5>
+                                    <small class="text-muted">Software Engineer</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex mb-3">
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star" class="text-warning"></i>
+                                <i data-lucide="star-half" class="text-warning"></i>
+                            </div>
+                            <p class="testimonial-text">"The custom topics feature is fantastic. I get updates on niche tech topics that mainstream news sites don't cover."</p>
+                            <div class="d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa R." class="rounded-circle me-3" width="50">
+                                <div>
+                                    <h5 class="mb-0">Lisa R.</h5>
+                                    <small class="text-muted">Tech Entrepreneur</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2>Ready to Transform Your News Experience?</h2>
+                    <p>Join thousands of users who get personalized news delivered their way.</p>
+                    <a href="#" class="btn btn-light btn-lg">Get Started Today</a>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
