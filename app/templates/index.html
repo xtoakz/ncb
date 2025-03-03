@@ -1,40 +1,79 @@
 {% extends "base.html" %}
-{% block title %}Todo App - Organize Your Tasks Efficiently{% endblock %}
+{% block title %}NewsletterChat - Personalized News via Chat{% endblock %}
 {% block content %}
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 fade-in">
-                    <h1>Stay Organized, Boost Productivity</h1>
-                    <p>A simple and efficient way to manage your tasks, track your progress, and achieve your goals.</p>
+                    <h1>Filter the World, Chat with News</h1>
+                    <p>Overwhelmed by information? NewsletterChat delivers personalized news on your favorite topics through an intuitive chat interface.</p>
                     <div class="d-flex gap-3">
                         <a href="{{ url_for('auth.signup') }}" class="btn btn-light btn-lg">Get Started</a>
-                        <a href="#features" class="btn btn-outline-light btn-lg">Learn More</a>
+                        <a href="#how-it-works" class="btn btn-outline-light btn-lg">Learn More</a>
                     </div>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block text-center">
-                    <img src="https://placehold.co/600x400" alt="Todo App Preview" class="img-fluid rounded shadow">
+                    <img src="https://placehold.co/600x400/4361ee/ffffff?text=NewsletterChat" alt="NewsletterChat Preview" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="py-5" id="features">
+    <!-- Problem Section -->
+    <section class="py-5 bg-light" id="problem">
         <div class="container">
             <div class="text-center mb-5">
-                <h2>Powerful Features</h2>
-                <p class="lead">Everything you need to stay organized and productive</p>
+                <h2>The Information Overflow Problem</h2>
+                <p class="lead">In today's digital age, we're drowning in information but starving for knowledge</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="card h-100 text-center p-4">
                         <div class="mx-auto mb-4">
-                            <i data-lucide="check-square" class="feature-icon"></i>
+                            <i data-lucide="alert-circle" class="feature-icon text-danger"></i>
                         </div>
-                        <h4>Task Management</h4>
-                        <p>Create, organize, and prioritize your tasks with ease. Mark tasks as complete when you're done.</p>
+                        <h4>Information Overload</h4>
+                        <p>The average person is bombarded with over 10,000 news items, ads, and messages every day, making it impossible to focus on what matters.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="filter-x" class="feature-icon text-danger"></i>
+                        </div>
+                        <h4>Irrelevant Content</h4>
+                        <p>Traditional news sources deliver a mix of everything, forcing you to wade through content you don't care about to find what you do.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="clock" class="feature-icon text-danger"></i>
+                        </div>
+                        <h4>Time Wasted</h4>
+                        <p>People spend an average of 2.5 hours daily searching for relevant information, time that could be better spent elsewhere.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Our Solution: NewsletterChat</h2>
+                <p class="lead">Personalized news delivery through an intuitive chat interface</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="filter" class="feature-icon text-success"></i>
+                        </div>
+                        <h4>Personalized Filtering</h4>
+                        <p>Subscribe to topics you care about and receive only relevant news and updates, filtered to match your interests.</p>
                         <div class="mt-auto pt-3">
                             <a href="{{ url_for('auth.signup') }}" class="btn btn-outline-primary">Try Now</a>
                         </div>
@@ -43,10 +82,10 @@
                 <div class="col-md-4">
                     <div class="card h-100 text-center p-4">
                         <div class="mx-auto mb-4">
-                            <i data-lucide="user" class="feature-icon"></i>
+                            <i data-lucide="message-circle" class="feature-icon text-success"></i>
                         </div>
-                        <h4>User Accounts</h4>
-                        <p>Create your personal account to keep your todos synchronized across all your devices.</p>
+                        <h4>Chat Interface</h4>
+                        <p>Interact with your news through a familiar chat interface. Ask questions, get summaries, and dive deeper into topics that interest you.</p>
                         <div class="mt-auto pt-3">
                             <a href="{{ url_for('auth.signup') }}" class="btn btn-outline-primary">Sign Up</a>
                         </div>
@@ -55,12 +94,12 @@
                 <div class="col-md-4">
                     <div class="card h-100 text-center p-4">
                         <div class="mx-auto mb-4">
-                            <i data-lucide="shield" class="feature-icon"></i>
+                            <i data-lucide="zap" class="feature-icon text-success"></i>
                         </div>
-                        <h4>Secure Storage</h4>
-                        <p>Your data is securely stored and protected. Only you can access your tasks.</p>
+                        <h4>Time Efficiency</h4>
+                        <p>Save hours each week by receiving only the news that matters to you, delivered in a conversational format that's easy to digest.</p>
                         <div class="mt-auto pt-3">
-                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                            <a href="#features" class="btn btn-outline-primary">Learn More</a>
                         </div>
                     </div>
                 </div>
@@ -68,12 +107,60 @@
         </div>
     </section>
 
+    <!-- Features Section -->
+    <section class="py-5 bg-light" id="features">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Powerful Features</h2>
+                <p class="lead">Everything you need to stay informed without the noise</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="hash" class="feature-icon"></i>
+                        </div>
+                        <h4>Topic Selection</h4>
+                        <p>Choose from predefined topics or create custom ones with our premium plan.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="newspaper" class="feature-icon"></i>
+                        </div>
+                        <h4>Curated Content</h4>
+                        <p>Receive high-quality news articles, videos, and Q&As on your chosen topics.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="message-square" class="feature-icon"></i>
+                        </div>
+                        <h4>Interactive Chat</h4>
+                        <p>Ask questions about news topics and get instant, informative responses.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center p-4">
+                        <div class="mx-auto mb-4">
+                            <i data-lucide="smartphone" class="feature-icon"></i>
+                        </div>
+                        <h4>Multi-Platform</h4>
+                        <p>Access your personalized news feed from any device, anywhere, anytime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- How It Works Section -->
-    <section class="py-5 bg-light">
+    <section class="py-5" id="how-it-works">
         <div class="container">
             <div class="text-center mb-5">
                 <h2>How It Works</h2>
-                <p class="lead">Three simple steps to boost your productivity</p>
+                <p class="lead">Three simple steps to transform your news experience</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
@@ -82,8 +169,8 @@
                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
                                 <h3 class="mb-0">1</h3>
                             </div>
-                            <h4>Create an Account</h4>
-                            <p>Sign up for a free account to get started with Todo App.</p>
+                            <h4>Sign Up & Select Topics</h4>
+                            <p>Create an account and choose the topics you're interested in following.</p>
                         </div>
                     </div>
                 </div>
@@ -93,8 +180,8 @@
                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
                                 <h3 class="mb-0">2</h3>
                             </div>
-                            <h4>Add Your Tasks</h4>
-                            <p>Create and organize your tasks with titles and descriptions.</p>
+                            <h4>Receive Personalized News</h4>
+                            <p>Get curated content delivered directly to your personalized dashboard.</p>
                         </div>
                     </div>
                 </div>
@@ -104,11 +191,64 @@
                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
                                 <h3 class="mb-0">3</h3>
                             </div>
-                            <h4>Track Your Progress</h4>
-                            <p>Mark tasks as complete and stay on top of your productivity.</p>
+                            <h4>Chat & Interact</h4>
+                            <p>Engage with your news through our interactive chat interface for a deeper understanding.</p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Preview Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Choose Your Plan</h2>
+                <p class="lead">Flexible options to meet your news consumption needs</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-5">
+                    <div class="card h-100 pricing-card">
+                        <div class="card-body">
+                            <h3 class="card-title">Free</h3>
+                            <p class="price">€0<span class="price-period">/month</span></p>
+                            <ul class="feature-list">
+                                <li><i data-lucide="check" class="text-success"></i> Access to predefined topics</li>
+                                <li><i data-lucide="check" class="text-success"></i> Politics</li>
+                                <li><i data-lucide="check" class="text-success"></i> Sport</li>
+                                <li><i data-lucide="check" class="text-success"></i> Celebrities</li>
+                                <li><i data-lucide="check" class="text-success"></i> Basic chat functionality</li>
+                                <li><i data-lucide="x" class="text-muted"></i> Custom topics</li>
+                                <li><i data-lucide="x" class="text-muted"></i> Layout customization</li>
+                                <li><i data-lucide="x" class="text-muted"></i> Priority support</li>
+                            </ul>
+                            <a href="{{ url_for('auth.signup') }}" class="btn btn-outline-primary btn-lg d-block">Sign Up Free</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card h-100 pricing-card highlighted">
+                        <div class="card-body">
+                            <span class="badge bg-primary position-absolute top-0 end-0 mt-3 me-3">Popular</span>
+                            <h3 class="card-title">Premium</h3>
+                            <p class="price">€9.99<span class="price-period">/month</span></p>
+                            <ul class="feature-list">
+                                <li><i data-lucide="check" class="text-success"></i> All Free features</li>
+                                <li><i data-lucide="check" class="text-success"></i> Create custom topics</li>
+                                <li><i data-lucide="check" class="text-success"></i> Customize layout</li>
+                                <li><i data-lucide="check" class="text-success"></i> Advanced chat capabilities</li>
+                                <li><i data-lucide="check" class="text-success"></i> Priority support</li>
+                                <li><i data-lucide="check" class="text-success"></i> Ad-free experience</li>
+                                <li><i data-lucide="check" class="text-success"></i> Early access to new features</li>
+                            </ul>
+                            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-lg d-block">Go Premium</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ url_for('main.pricing') }}" class="btn btn-link">View Full Pricing Details</a>
             </div>
         </div>
     </section>
@@ -131,7 +271,7 @@
                                 <i data-lucide="star" class="text-warning"></i>
                                 <i data-lucide="star" class="text-warning"></i>
                             </div>
-                            <p class="testimonial-text">"Todo App has completely changed how I organize my day. I'm much more productive now!"</p>
+                            <p class="testimonial-text">"NewsletterChat has transformed how I consume news. I save hours each week and stay better informed about topics I care about."</p>
                             <div class="d-flex align-items-center">
                                 <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah K." class="rounded-circle me-3" width="50">
                                 <div>
@@ -152,7 +292,7 @@
                                 <i data-lucide="star" class="text-warning"></i>
                                 <i data-lucide="star" class="text-warning"></i>
                             </div>
-                            <p class="testimonial-text">"The simple interface makes it easy to manage all my tasks. I love how I can track my progress."</p>
+                            <p class="testimonial-text">"The chat interface is brilliant. I can ask questions about news topics and get instant, informative responses. It's like having a news expert on call."</p>
                             <div class="d-flex align-items-center">
                                 <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Michael T." class="rounded-circle me-3" width="50">
                                 <div>
@@ -173,7 +313,7 @@
                                 <i data-lucide="star" class="text-warning"></i>
                                 <i data-lucide="star-half" class="text-warning"></i>
                             </div>
-                            <p class="testimonial-text">"I've tried many todo apps, but this one is by far the most intuitive and user-friendly."</p>
+                            <p class="testimonial-text">"The premium subscription is worth every penny. Creating custom topics has allowed me to stay on top of industry trends that traditional news sources don't cover."</p>
                             <div class="d-flex align-items-center">
                                 <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa R." class="rounded-circle me-3" width="50">
                                 <div>
@@ -193,8 +333,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h2>Ready to Get Organized?</h2>
-                    <p>Join thousands of users who boost their productivity with Todo App.</p>
+                    <h2>Ready to Filter the Noise?</h2>
+                    <p>Join thousands of users who get personalized news delivered through an intuitive chat interface.</p>
                     <a href="{{ url_for('auth.signup') }}" class="btn btn-light btn-lg">Get Started Today</a>
                 </div>
             </div>
