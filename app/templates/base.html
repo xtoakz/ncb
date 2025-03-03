@@ -50,12 +50,6 @@
                             </a>
                         </li>
                         {% endif %}
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('newsletter.dashboard') }}">
-                                <i data-lucide="newspaper" class="nav-icon"></i> Dashboard
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('newsletter.topics') }}">
                                 <i data-lucide="hash" class="nav-icon"></i> Topics
@@ -113,7 +107,7 @@
                         <li><a href="{{ url_for('main.about') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> About</a></li>
                         <li><a href="{{ url_for('main.pricing') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Pricing</a></li>
                         {% if session.get('user') %}
-                        <li><a href="{{ url_for('newsletter.dashboard') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Dashboard</a></li>
+                        <li><a href="{{ url_for('newsletter.dashboard') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Newsletter</a></li>
                         {% else %}
                         <li><a href="{{ url_for('auth.login') }}" class="text-light text-decoration-none"><i data-lucide="chevron-right" class="footer-icon"></i> Login</a></li>
                         {% endif %}
@@ -124,11 +118,11 @@
                     <ul class="list-unstyled">
                         <li class="d-flex align-items-center mb-2">
                             <i data-lucide="mail" class="footer-icon me-2"></i>
-                            <a href="mailto:support@newsletterchat.com" class="text-light text-decoration-none">support@newsletterchat.com</a>
+                            <a href="mailto:support@newsletterchat.com" class="text-light text-decoration-none">support@newsletter.chat</a>
                         </li>
                         <li class="d-flex align-items-center mb-2">
                             <i data-lucide="github" class="footer-icon me-2"></i>
-                            <a href="https://github.com/newsletterchat" class="text-light text-decoration-none">github.com/newsletterchat</a>
+                            <a href="https://github.com/newsletterchat" class="text-light text-decoration-none">github.com</a>
                         </li>
                     </ul>
                 </div>
@@ -136,7 +130,7 @@
             <hr class="my-4">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; 2023 NewsletterChat | All rights reserved</p>
+                    <p class="mb-0">&copy; 2025 NewsletterChat | All rights reserved</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="{{ url_for('main.imprint') }}" class="text-light text-decoration-none">Imprint</a> |

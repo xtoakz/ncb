@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Admin Dashboard</h2>
+            <p>Welcome to the admin dashboard!</p>
+            
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title">Promote User to Admin</h4>
+                    <form action="{{ url_for('auth.promote_to_admin', user_id=request.form['user_id']) }}" method="POST">
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label">User ID</label>
+                            <input type="text" class="form-control" id="user_id" name="user_id" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i data-lucide="arrow-up-circle" class="me-1" style="width: 18px; height: 18px;"></i> Promote to Admin
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>User Overview</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Full Name</th>
+                            <th>Role</th>
+                            <th>Subscription Plan</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.full_name }}</td>
+                            <td>
+                                <form action="{{ url_for('admin.set_role', user_id=user.id) }}" method="POST">
+                                    <select class="form-select form-select-sm" name="role" onchange="this.form.submit()">
+                                        <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                                        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('admin.update_plan', user_id=user.id) }}" method="POST">
+                                    <select class="form-select form-select-sm" name="plan" onchange="this.form.submit()">
+                                        <option value="free" {% if user.subscription_plan == 'free' %}selected{% endif %}>Free</option>
+                                        <option value="premium" {% if user.subscription_plan == 'premium' %}selected{% endif %}>Premium</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

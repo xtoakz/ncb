@@ -76,6 +76,7 @@ def get_user_profile(user_id):
     try:
         response = supabase.table('user_profiles').select('*').eq('id', user_id).execute()
         if response.data and len(response.data) > 0:
+            print(f"User profile: {response.data[0]}")
             return response.data[0]
         return None
     except Exception as e:

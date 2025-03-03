@@ -57,6 +57,17 @@ CREATE INDEX IF NOT EXISTS idx_user_topics_topic_id ON user_topics(topic_id);
 CREATE INDEX IF NOT EXISTS idx_newsletters_topic_id ON newsletters(topic_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_user_id ON chat_messages(user_id);
 
+-- Create function to check if a user is an admin
+CREATE OR REPLACE FUNCTION is_admin(user_id UUID)
+RETURNS BOOLEAN AS $$
+BEGIN
+    RETURN EXISTS (
+        SELECT 1 FROM user_profiles
+        WHERE id = user_id AND role = 'admin'
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- Enable Row Level Security
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE topics ENABLE ROW LEVEL SECURITY;
@@ -65,32 +76,28 @@ ALTER TABLE newsletters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
 
 -- Create policies for user_profiles
+DROP POLICY IF EXISTS "Users can view their own profile" ON user_profiles;
 CREATE POLICY "Users can view their own profile" ON user_profiles
     FOR SELECT USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update their own profile" ON user_profiles;
 CREATE POLICY "Users can update their own profile" ON user_profiles
     FOR UPDATE USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Admins can view all profiles" ON user_profiles;
 CREATE POLICY "Admins can view all profiles" ON user_profiles
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM user_profiles
-            WHERE id = auth.uid() AND role = 'admin'
-        )
-    );
+    FOR SELECT USING (is_admin(auth.uid()));
 
+DROP POLICY IF EXISTS "Admins can update all profiles" ON user_profiles;
 CREATE POLICY "Admins can update all profiles" ON user_profiles
-    FOR UPDATE USING (
-        EXISTS (
-            SELECT 1 FROM user_profiles
-            WHERE id = auth.uid() AND role = 'admin'
-        )
-    );
+    FOR UPDATE USING (is_admin(auth.uid()));
 
 -- Create policies for topics
+DROP POLICY IF EXISTS "Anyone can view predefined topics" ON topics;
 CREATE POLICY "Anyone can view predefined topics" ON topics
     FOR SELECT USING (is_predefined = TRUE);
 
+DROP POLICY IF EXISTS "Premium users can view all topics" ON topics;
 CREATE POLICY "Premium users can view all topics" ON topics
     FOR SELECT USING (
         EXISTS (
@@ -99,14 +106,11 @@ CREATE POLICY "Premium users can view all topics" ON topics
         )
     );
 
+DROP POLICY IF EXISTS "Admins can manage all topics" ON topics;
 CREATE POLICY "Admins can manage all topics" ON topics
-    FOR ALL USING (
-        EXISTS (
-            SELECT 1 FROM user_profiles
-            WHERE id = auth.uid() AND role = 'admin'
-        )
-    );
+    FOR ALL USING (is_admin(auth.uid()));
 
+DROP POLICY IF EXISTS "Premium users can create custom topics" ON topics;
 CREATE POLICY "Premium users can create custom topics" ON topics
     FOR INSERT WITH CHECK (
         EXISTS (
@@ -116,21 +120,20 @@ CREATE POLICY "Premium users can create custom topics" ON topics
     );
 
 -- Create policies for user_topics
+DROP POLICY IF EXISTS "Users can view their own topic subscriptions" ON user_topics;
 CREATE POLICY "Users can view their own topic subscriptions" ON user_topics
     FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage their own topic subscriptions" ON user_topics;
 CREATE POLICY "Users can manage their own topic subscriptions" ON user_topics
     FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can view all topic subscriptions" ON user_topics;
 CREATE POLICY "Admins can view all topic subscriptions" ON user_topics
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM user_profiles
-            WHERE id = auth.uid() AND role = 'admin'
-        )
-    );
+    FOR SELECT USING (is_admin(auth.uid()));
 
 -- Create policies for newsletters
+DROP POLICY IF EXISTS "Users can view newsletters for their subscribed topics" ON newsletters;
 CREATE POLICY "Users can view newsletters for their subscribed topics" ON newsletters
     FOR SELECT USING (
         EXISTS (
@@ -139,28 +142,22 @@ CREATE POLICY "Users can view newsletters for their subscribed topics" ON newsle
         )
     );
 
+DROP POLICY IF EXISTS "Admins can manage all newsletters" ON newsletters;
 CREATE POLICY "Admins can manage all newsletters" ON newsletters
-    FOR ALL USING (
-        EXISTS (
-            SELECT 1 FROM user_profiles
-            WHERE id = auth.uid() AND role = 'admin'
-        )
-    );
+    FOR ALL USING (is_admin(auth.uid()));
 
 -- Create policies for chat_messages
+DROP POLICY IF EXISTS "Users can view their own chat messages" ON chat_messages;
 CREATE POLICY "Users can view their own chat messages" ON chat_messages
     FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can create their own chat messages" ON chat_messages;
 CREATE POLICY "Users can create their own chat messages" ON chat_messages
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can view all chat messages" ON chat_messages;
 CREATE POLICY "Admins can view all chat messages" ON chat_messages
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM user_profiles
-            WHERE id = auth.uid() AND role = 'admin'
-        )
-    );
+    FOR SELECT USING (is_admin(auth.uid()));
 
 -- Create function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -172,16 +169,19 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create triggers to update updated_at timestamp
+DROP TRIGGER IF EXISTS update_user_profiles_updated_at ON user_profiles;
 CREATE TRIGGER update_user_profiles_updated_at
 BEFORE UPDATE ON user_profiles
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_topics_updated_at ON topics;
 CREATE TRIGGER update_topics_updated_at
 BEFORE UPDATE ON topics
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_newsletters_updated_at ON newsletters;
 CREATE TRIGGER update_newsletters_updated_at
 BEFORE UPDATE ON newsletters
 FOR EACH ROW
@@ -189,7 +189,8 @@ EXECUTE FUNCTION update_updated_at_column();
 
 -- Insert predefined topics
 INSERT INTO topics (name, description, is_predefined)
-VALUES 
+VALUES
 ('Politics', 'Stay updated with the latest political news and developments', TRUE),
 ('Sport', 'Get the latest sports news, results, and analysis', TRUE),
-('Celebrities', 'Keep up with celebrity news, gossip, and entertainment', TRUE);
+('Celebrities', 'Keep up with celebrity news, gossip, and entertainment', TRUE)
+ON CONFLICT DO NOTHING;

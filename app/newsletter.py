@@ -33,11 +33,12 @@ def dashboard():
         flash(f'Error fetching chat messages: {chat_messages["error"]}', 'danger')
         chat_messages = []
     
-    return render_template('newsletter/dashboard.html', 
-                          user_profile=user_profile,
-                          topics=user_topics,
-                          newsletters=newsletters,
-                          chat_messages=chat_messages)
+    return render_template('newsletter/dashboard.html',
+                              user_profile=user_profile,
+                              topics=user_topics,
+                              newsletters=newsletters,
+                              chat_messages=chat_messages,
+                              supabase=supabase)
 
 @bp.route('/chat', methods=['POST'])
 @login_required
@@ -161,10 +162,33 @@ def topics():
     # Convert user_topics to a list of IDs for easy checking
     subscribed_topic_ids = [topic['id'] for topic in user_topics] if isinstance(user_topics, list) else []
     
-    return render_template('newsletter/topics.html', 
+    return render_template('newsletter/topics.html',
                           all_topics=all_topics,
                           subscribed_topic_ids=subscribed_topic_ids,
-                          user_profile=user_profile)
+                          user_profile=user_profile,
+                          supabase=supabase)
+
+@bp.route('/create', methods=['POST'])
+@login_required
+def create():
+    user_id = session.get('user', {}).get('id')
+    title = request.form.get('title')
+    content = request.form.get('content')
+    topic_id = request.form.get('topic')
+    
+    if not title or not content or not topic_id:
+        flash('All fields are required', 'danger')
+        return redirect(url_for('newsletter.dashboard'))
+    
+    # Process the data (save to database, etc.)
+    result = supabase.create_newsletter(user_id, title, content, topic_id)
+    
+    if isinstance(result, dict) and 'error' in result:
+        flash(f'Error creating newsletter: {result["error"]}', 'danger')
+    else:
+        flash('Newsletter created successfully!', 'success')
+    
+    return redirect(url_for('newsletter.dashboard'))
 
 @bp.route('/create-topic', methods=['POST'])
 @login_required
@@ -199,5 +223,37 @@ def create_topic():
             flash('Topic created and subscribed successfully!', 'success')
         else:
             flash('Topic created but could not subscribe automatically', 'warning')
+    
+    
+    return redirect(url_for('newsletter.topics'))
+
+@bp.route('/update_topic/<topic_id>', methods=['POST'])
+@login_required
+def update_topic(topic_id):
+    name = request.form.get('name')
+    description = request.form.get('description', '')
+    
+    if not name:
+        flash('Topic name is required', 'danger')
+        return redirect(url_for('newsletter.topics'))
+    
+    result = supabase.update_topic(topic_id, {'name': name, 'description': description})
+    
+    if isinstance(result, dict) and 'error' in result:
+        flash(f'Error updating topic: {result["error"]}', 'danger')
+    else:
+        flash('Topic updated successfully!', 'success')
+    
+    return redirect(url_for('newsletter.topics'))
+
+@bp.route('/delete_topic/<topic_id>', methods=['POST'])
+@login_required
+def delete_topic(topic_id):
+    result = supabase.delete_topic(topic_id)
+    
+    if isinstance(result, dict) and 'error' in result:
+        flash(f'Error deleting topic: {result["error"]}', 'danger')
+    else:
+        flash('Topic deleted successfully!', 'success')
     
     return redirect(url_for('newsletter.topics'))

@@ -40,12 +40,13 @@ def dashboard():
         'total_newsletters': len(newsletters) if isinstance(newsletters, list) else 0
     }
     
-    return render_template('admin/dashboard.html', 
+    return render_template('admin/dashboard.html',
                           user_profile=user_profile,
                           users=users,
                           topics=topics,
                           newsletters=newsletters,
-                          stats=stats)
+                          stats=stats,
+                          supabase=supabase)
 
 @bp.route('/users')
 @admin_required
@@ -74,8 +75,26 @@ def set_role(user_id):
         flash(f'Error setting role: {result["error"]}', 'danger')
     else:
         flash(f'User role updated to {role} successfully!', 'success')
-    
-    return redirect(url_for('admin.users'))
+
+    return redirect(url_for('admin.dashboard'))
+
+@bp.route('/update-plan/<user_id>', methods=['POST'])
+@admin_required
+def update_plan(user_id):
+    plan = request.form.get('plan')
+
+    if not plan or plan not in ['free', 'premium']:
+        flash('Invalid subscription plan', 'danger')
+        return redirect(url_for('admin.dashboard'))
+
+    result = supabase.update_subscription_plan(user_id, plan)
+
+    if isinstance(result, dict) and 'error' in result:
+        flash(f'Error setting subscription plan: {result["error"]}', 'danger')
+    else:
+        flash(f'User subscription plan updated to {plan} successfully!', 'success')
+
+    return redirect(url_for('admin.dashboard'))
 
 @bp.route('/topics')
 @admin_required

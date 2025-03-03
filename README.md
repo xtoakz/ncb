@@ -1,22 +1,24 @@
-# Todo App
+# NewsletterChat
 
-A simple and efficient web application for managing your tasks and boosting productivity. Built with Flask and Supabase.
+A web application for managing your tasks and newsletters. Built with Flask and Supabase.
 
 ## Features
 
-- **User Authentication**: Secure sign up and login functionality using Supabase Auth
-- **Task Management**: Create, read, update, and delete tasks
-- **Dashboard**: User-friendly dashboard to manage all your tasks
-- **Responsive Design**: Works on desktop and mobile devices
-- **Modern UI**: Clean and intuitive interface with shadcn-inspired components
+- User Authentication: Secure sign up and login functionality using Supabase Auth
+- Task Management: Create, read, update, and delete tasks
+- Newsletter Management: Create, read, update, and delete newsletters
+- Topic Management: Create, read, update, and delete topics
+- Dashboard: User-friendly dashboard to manage your tasks and newsletters
+- Responsive Design: Works on desktop and mobile devices
+- Modern UI: Clean and intuitive interface
 
 ## Tech Stack
 
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap 5
-- **Backend**: Flask (Python)
-- **Database**: PostgreSQL (via Supabase)
-- **Authentication**: Supabase Auth
-- **Icons**: Lucide Icons
+- Frontend: HTML, CSS, JavaScript, Bootstrap 5
+- Backend: Flask (Python)
+- Database: PostgreSQL (via Supabase)
+- Authentication: Supabase Auth
+- Icons: Lucide Icons
 
 ## Installation
 
@@ -30,8 +32,8 @@ A simple and efficient web application for managing your tasks and boosting prod
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/todo-app.git
-   cd todo-app
+   git clone https://github.com/yourusername/newsletter-chat.git
+   cd newsletter-chat
    ```
 
 2. Create a virtual environment:
@@ -85,17 +87,19 @@ A simple and efficient web application for managing your tasks and boosting prod
 ## Project Structure
 
 ```
-todo-app/
+newsletter-chat/
 ├── app/
 │   ├── static/
 │   │   ├── css/
 │   │   └── js/
 │   ├── templates/
 │   │   ├── auth/
-│   │   ├── todo/
-│   │   └── ...
+│   │   ├── newsletter/
+│   │   └── todo/
 │   ├── __init__.py
+│   ├── admin.py
 │   ├── auth.py
+│   ├── newsletter.py
 │   ├── routes.py
 │   └── todo.py
 ├── supabase_schema.sql
@@ -111,7 +115,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgements
 
-- [Flask](https://flask.palletsprojects.com/)
-- [Supabase](https://supabase.io/)
-- [Bootstrap](https://getbootstrap.com/)
-- [Lucide Icons](https://lucide.dev/)
+- Flask
+- Supabase
+- Bootstrap
+- Lucide Icons

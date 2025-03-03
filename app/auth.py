@@ -62,10 +62,13 @@ def signup():
             flash(f'Error: {response["error"]}', 'danger')
             return render_template('auth/signup.html')
         
+        # Create user profile
+        supabase.create_user_profile(response['user']['id'], full_name, phone_number)
+        
         flash('Registration successful! Please check your email to confirm your account.', 'success')
         return redirect(url_for('auth.login'))
     
-    return render_template('auth/signup.html')
+    return render_template('auth/signup.html', supabase=supabase)
 
 @bp.route('/signup/google')
 def signup_google():
@@ -96,19 +99,26 @@ def login():
         
         # Store user data in session
         session['user'] = {
-            'id': response['user']['id'],
-            'email': response['user']['email'],
-            'access_token': response['session']['access_token']
+            'id': response.user.id,
+            'email': response.user.email,
+            'access_token': response.session.access_token
         }
         
         # Get user profile
-        user_profile = supabase.get_user_profile(response['user']['id'])
+        user_profile = supabase.get_user_profile(response.user.id)
         
         # Check if user is admin
         if user_profile and user_profile.get('role') == 'admin':
             flash('Welcome back, Admin!', 'success')
             return redirect(url_for('admin.dashboard'))
-        
+
+        # Update user data in session
+        session['user'] = {
+            'id': response.user.id,
+            'email': response.user.email,
+            'access_token': response.session.access_token
+        }
+
         flash('Login successful!', 'success')
         return redirect(url_for('newsletter.dashboard'))
     
@@ -118,6 +128,7 @@ def login():
 def logout():
     if 'user' in session:
         access_token = session['user'].get('access_token')
+        print(f"Access token: {access_token}")
         if access_token:
             supabase.sign_out(access_token)
         session.pop('user', None)
@@ -173,7 +184,8 @@ def profile():
         'all_topics': all_topics if isinstance(all_topics, list) else []
     }
     
-    return render_template('auth/profile.html', user=user_data)
+    print(f"User profile: {user_profile}")
+    return render_template('auth/profile.html', user=user_data, supabase=supabase)
 
 @bp.route('/verify-phone', methods=['POST'])
 @login_required
@@ -219,6 +231,26 @@ def subscribe_topic(topic_id):
     
     return redirect(url_for('auth.profile'))
 
+@bp.route('/promote_to_admin/<user_id>', methods=['POST'])
+@login_required
+def promote_to_admin(user_id):
+    # Get user profile
+    user_profile = supabase.get_user_profile(user_id)
+    
+    if not user_profile:
+        flash('User not found', 'danger')
+        return redirect(url_for('admin.dashboard'))
+    
+    # Update user role to admin
+    result = supabase.update_user_profile(user_id, {'role': 'admin'})
+    
+    if isinstance(result, dict) and 'error' in result:
+        flash(f'Error promoting user to admin: {result["error"]}', 'danger')
+    else:
+        flash('User promoted to admin successfully!', 'success')
+    
+    return redirect(url_for('admin.dashboard'))
+
 @bp.route('/unsubscribe-topic/<topic_id>', methods=['POST'])
 @login_required
 def unsubscribe_topic(topic_id):
@@ -251,4 +283,4 @@ def upgrade():
             flash('Upgraded to Premium successfully!', 'success')
             return redirect(url_for('auth.profile'))
     
-    return render_template('auth/upgrade.html', user_profile=user_profile)
+    return render_template('auth/upgrade.html', user_profile=user_profile, supabase=supabase)
