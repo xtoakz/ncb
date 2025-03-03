@@ -6,7 +6,7 @@ bp = Blueprint('main', __name__)
 def index():
     # If user is logged in, redirect to dashboard
     if 'user' in session:
-        return redirect(url_for('todo.dashboard'))
+        return redirect(url_for('newsletter.dashboard'))
     return render_template('index.html')
 
 @bp.route('/about')
@@ -16,3 +16,7 @@ def about():
 @bp.route('/imprint')
 def imprint():
     return render_template('imprint.html')
+
+@bp.route('/pricing')
+def pricing():
+    return render_template('pricing.html')
