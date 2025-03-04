@@ -220,10 +220,11 @@ def get_newsletters(user_id=None, topic_id=None):
     except Exception as e:
         return {"error": str(e)}
 
-def create_newsletter(title, content, topic_id):
+def create_newsletter(user_id, title, content, topic_id):
     """Create a new newsletter"""
     try:
         response = supabase.table('newsletters').insert({
+            'user_id': user_id,
             'title': title,
             'content': content,
             'topic_id': topic_id
@@ -266,6 +267,44 @@ def create_chat_message(user_id, content, is_from_user=True):
             'is_from_user': is_from_user
         }).execute()
         return response.data
+    except Exception as e:
+        return {"error": str(e)}
+
+# Todo functions
+def get_todos(user_id):
+    """Get all todos for a user"""
+    try:
+        response = supabase.table('todos').select('*').eq('user_id', user_id).order('created_at', desc=True).execute()
+        return response.data
+    except Exception as e:
+        return {"error": str(e)}
+
+def create_todo(user_id, title, description=""):
+    """Create a new todo"""
+    try:
+        response = supabase.table('todos').insert({
+            'user_id': user_id,
+            'title': title,
+            'description': description,
+            'completed': False
+        }).execute()
+        return response.data
+    except Exception as e:
+        return {"error": str(e)}
+
+def update_todo(todo_id, data):
+    """Update a todo"""
+    try:
+        response = supabase.table('todos').update(data).eq('id', todo_id).execute()
+        return response.data
+    except Exception as e:
+        return {"error": str(e)}
+
+def delete_todo(todo_id):
+    """Delete a todo"""
+    try:
+        response = supabase.table('todos').delete().eq('id', todo_id).execute()
+        return {"success": True}
     except Exception as e:
         return {"error": str(e)}
 
