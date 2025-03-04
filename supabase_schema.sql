@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS user_topics (
 -- Create newsletters table
 CREATE TABLE IF NOT EXISTS newsletters (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     topic_id UUID NOT NULL REFERENCES topics(id) ON DELETE CASCADE,
@@ -48,6 +49,17 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Create todos table
+CREATE TABLE IF NOT EXISTS todos (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    description TEXT,
+    completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Create indices for faster queries
 CREATE INDEX IF NOT EXISTS idx_user_profiles_role ON user_profiles(role);
 CREATE INDEX IF NOT EXISTS idx_user_profiles_subscription_plan ON user_profiles(subscription_plan);
@@ -55,7 +67,9 @@ CREATE INDEX IF NOT EXISTS idx_topics_is_predefined ON topics(is_predefined);
 CREATE INDEX IF NOT EXISTS idx_user_topics_user_id ON user_topics(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_topics_topic_id ON user_topics(topic_id);
 CREATE INDEX IF NOT EXISTS idx_newsletters_topic_id ON newsletters(topic_id);
+CREATE INDEX IF NOT EXISTS idx_newsletters_user_id ON newsletters(user_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_user_id ON chat_messages(user_id);
+CREATE INDEX IF NOT EXISTS idx_todos_user_id ON todos(user_id);
 
 -- Create function to check if a user is an admin
 CREATE OR REPLACE FUNCTION is_admin(user_id UUID)
@@ -74,6 +88,7 @@ ALTER TABLE topics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_topics ENABLE ROW LEVEL SECURITY;
 ALTER TABLE newsletters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE todos ENABLE ROW LEVEL SECURITY;
 
 -- Create policies for user_profiles
 DROP POLICY IF EXISTS "Users can view their own profile" ON user_profiles;
@@ -159,6 +174,19 @@ DROP POLICY IF EXISTS "Admins can view all chat messages" ON chat_messages;
 CREATE POLICY "Admins can view all chat messages" ON chat_messages
     FOR SELECT USING (is_admin(auth.uid()));
 
+-- Create policies for todos
+DROP POLICY IF EXISTS "Users can view their own todos" ON todos;
+CREATE POLICY "Users can view their own todos" ON todos
+    FOR SELECT USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own todos" ON todos;
+CREATE POLICY "Users can manage their own todos" ON todos
+    FOR ALL USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Admins can view all todos" ON todos;
+CREATE POLICY "Admins can view all todos" ON todos
+    FOR SELECT USING (is_admin(auth.uid()));
+
 -- Create function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -184,6 +212,12 @@ EXECUTE FUNCTION update_updated_at_column();
 DROP TRIGGER IF EXISTS update_newsletters_updated_at ON newsletters;
 CREATE TRIGGER update_newsletters_updated_at
 BEFORE UPDATE ON newsletters
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_todos_updated_at ON todos;
+CREATE TRIGGER update_todos_updated_at
+BEFORE UPDATE ON todos
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
